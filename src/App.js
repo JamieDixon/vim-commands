@@ -1,7 +1,17 @@
 import React, {useState, useEffect} from 'react';
 
+const getQs = () =>
+  window.location.search
+    .slice(1)
+    .split('&')
+    .map(x => x.split('='))
+    .reduce((agg, [key, val]) => ({...agg, [key]: val}), {});
+
 const commands = [
-  {command: ['q', '!'], description: 'Exit / quit vim, disgarding all changes'},
+  {
+    command: [':', 'q', '!'],
+    description: 'Exit / quit vim, disgarding all changes',
+  },
   {command: [':', 'w'], description: 'Save your changes (write)'},
   {
     command: [':', 'w', 'q'],
@@ -77,7 +87,7 @@ const any = a => b => a.reduce((agg, next) => agg || b.includes(next), false);
 
 const App = props => {
   const [filteredCommands, setFilteredCommands] = useState(commands);
-  const [filterValue, setFilterValue] = useState('');
+  const [filterValue, setFilterValue] = useState(getQs().q || '');
   const bouncedFilterValue = useDebounce(500, filterValue);
 
   useEffect(() => {
@@ -136,7 +146,7 @@ const App = props => {
         </thead>
         <tbody>
           {filteredCommands.map(command => (
-            <tr key={command.command}>
+            <tr key={command.command.join('')}>
               <th>{command.description}</th>
               <td>
                 {command.command.map(c => (
