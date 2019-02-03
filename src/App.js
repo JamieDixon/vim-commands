@@ -161,6 +161,11 @@ const App = props => {
         The code in this project is all being edited with neovim as part of a
         learning exercise
       </p>
+      <p>
+        <a href="https://codesandbox.io/s/github/JamieDixon/vim-commands">
+          view the full source on codesandbox.io
+        </a>
+      </p>
     </div>
   );
 };
