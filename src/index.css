@@ -13,6 +13,9 @@ code {
     monospace;
 }
 
+label {
+  margin-right: 1em;
+}
 input {
   font-size: 1em;
   padding: 0.3em;
@@ -26,6 +29,24 @@ table {
   width: 100%;
   text-align: left;
   padding: 1em;
+  border-collapse: collapse;
+  margin-top: 2em;
+}
+
+thead th {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5em;
+}
+
+tbody:before {
+  content: '.';
+  display: block;
+  line-height: 0.5em;
+  visibility: hidden;
+}
+
+tbody th {
+  font-weight: normal;
 }
 
 td {
@@ -33,6 +54,9 @@ td {
   width: 30%;
 }
 
+tbody tr:nth-child(even) {
+  background: #eee;
+}
 .command-char {
   display: block;
   min-width: 25px;
