@@ -137,7 +137,7 @@ const App = props => {
         <tbody>
           {filteredCommands.map(command => (
             <tr key={command.command}>
-              <td>{command.description}</td>
+              <th>{command.description}</th>
               <td>
                 {command.command.map(c => (
                   <span className="command-char">{c}</span>
