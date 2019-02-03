@@ -34,8 +34,12 @@ td {
 
 .command-char {
   display: block;
+  width: 25px;
+  height: 25px;
+  float: left;
   text-align: center;
   padding: 0.2em;
+  margin-left: 0.2em;
   background: #cccccc;
   border-radius: 2px;
   color: #000000;

@@ -1,58 +1,61 @@
 import React, {useState, useEffect} from 'react';
 
 const commands = [
-  {command: 'q!', description: 'Exit / quit vim, disgarding all changes'},
-  {command: ':w', description: 'Save your changes (write)'},
-  {command: ':wq', description: 'Save your changes (write) and exit / quit vim'},
+  {command: ['q', '!'], description: 'Exit / quit vim, disgarding all changes'},
+  {command: [':', 'w'], description: 'Save your changes (write)'},
   {
-    command: 'x',
+    command: [':', 'w', 'q'],
+    description: 'Save your changes (write) and exit / quit vim',
+  },
+  {
+    command: ['x'],
     description: 'Delete a single character at the cursor',
   },
   {
-    command: 'dw',
+    command: ['d', 'w'],
     description: 'Delete an entire word starting at the cursor',
   },
   {
-    command: 'i',
+    command: ['i'],
     description: 'Enter insert mode',
   },
   {
-    command: 'a',
+    command: ['a'],
     description: 'Enter append mode at the cursor',
   },
   {
-    command: 'd$',
+    command: ['d', '$'],
     description: 'Delete from the cursor to the end of the line',
   },
   {
-    command: 'p',
+    command: ['p'],
     description:
       'Put the contents of the "clipboard" into the cursor position. You can use this after doing dd to delete a line. Kinda like dd is cut and p is paste',
   },
   {
-    command: 'r',
+    command: ['r'],
     description:
       'Replace the letter at the cursor. Press r then the letter to insert.',
   },
   {
-    command: 'ce',
+    command: ['c', 'e'],
     description:
       'Delete the current word beginning at the cursor and enter insert mode',
   },
   {
-    command: 'G',
+    command: ['G'],
     description: 'Go to the bottm of the file',
   },
   {
-    command: 'gg',
+    command: ['g', 'g'],
     description: 'Go to the top of the file',
   },
   {
-    command: '[line number]G',
+    command: ['[line number]', 'G'],
     description: 'Go to the line in question i.e. 200G',
   },
   {
-    command: 'dd',
+    command: ['d', 'd'],
     description:
       'Delete the current line and store the deleted value in the registry (kinda like the clipboard).',
   },
@@ -69,6 +72,9 @@ const useDebounce = (ms, value) => {
 
   return v;
 };
+
+const any = a => b => a.reduce((agg, next) => agg || b.includes(next), false);
+
 const App = props => {
   const [filteredCommands, setFilteredCommands] = useState(commands);
   const [filterValue, setFilterValue] = useState('');
@@ -93,7 +99,7 @@ const App = props => {
           .split(' ')
           .reduce(
             (agg, word) =>
-              valueWords.includes(word) || valueWords.includes(command.command)
+              valueWords.includes(word) || any(valueWords)(command.command)
                 ? agg + 1
                 : agg,
             0,
@@ -133,7 +139,9 @@ const App = props => {
             <tr key={command.command}>
               <td>{command.description}</td>
               <td>
-                <span className="command-char">{command.command}</span>
+                {command.command.map(c => (
+                  <span className="command-char">{c}</span>
+                ))}
               </td>
             </tr>
           ))}
