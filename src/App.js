@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 const commands = [
@@ -28,20 +27,85 @@ const commands = [
     description:
       'Put the contents of the "clipboard" into the cursor position. You can use this after doing dd to delete a line. Kinda like dd is cut and p is paste',
   },
+  {
+    command: 'r',
+    description:
+      'Replace the letter at the cursor. Press r then the letter to insert.',
+  },
+  {
+    command: 'ce',
+    description:
+      'Delete the current word beginning at the cursor and enter insert mode',
+  },
+  {
+    command: 'G',
+    description: 'Go to the bottm of the file',
+  },
+  {
+    command: 'gg',
+    description: 'Go to the top of the file',
+  },
+  {
+    command: '[line number]G',
+    description: 'Go to the line in question i.e. 200G',
+  },
+  {
+    command: 'dd',
+    description:
+      'Delete the current line and store the deleted value in the registry (kinda like the clipboard).',
+  },
 ];
 
+const useDebounce = (ms, value) => {
+  const [v, sv] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => sv(value), ms);
+
+    return () => clearTimeout(timer);
+  }, [value]);
+
+  return v;
+};
 const App = props => {
   const [filteredCommands, setFilteredCommands] = useState(commands);
   const [filterValue, setFilterValue] = useState('');
+  const bouncedFilterValue = useDebounce(500, filterValue);
 
-  // Why is this in useEffect? Just as a reminder for me to debounce this later on
-  // I'd probably forget if it was in the event handler itself. ¯\_(ツ)_/¯
   useEffect(() => {
-    const nextCommands = commands.filter(command =>
-      command.description.toLowerCase().includes(filterValue.toLowerCase()),
-    );
+    if (!filterValue) {
+      setFilteredCommands(commands);
+      return;
+    }
+
+    // Very basic relevancy search based on the number of matching words
+    const valueWords = filterValue
+      .toLowerCase()
+      .trim()
+      .split(' ');
+    const nextCommands = commands
+      .map(command => {
+        const relevancy = command.description
+          .toLowerCase()
+          .trim()
+          .split(' ')
+          .reduce(
+            (agg, word) =>
+              valueWords.includes(word) || valueWords.includes(command.command)
+                ? agg + 1
+                : agg,
+            0,
+          );
+
+        return {
+          ...command,
+          relevancy,
+        };
+      })
+      .filter(command => command.relevancy > 0)
+      .sort((a, b) => b.relevancy - a.relevancy);
     setFilteredCommands(nextCommands);
-  }, [filterValue]);
+  }, [bouncedFilterValue]);
 
   return (
     <div className="App">
@@ -67,9 +131,11 @@ const App = props => {
           </thead>
           <tbody>
             {filteredCommands.map(command => (
-              <tr>
+              <tr key={command.command}>
                 <td>{command.description}</td>
-                <td><span className="command-char">{command.command}</span></td>
+                <td>
+                  <span className="command-char">{command.command}</span>
+                </td>
               </tr>
             ))}
           </tbody>
