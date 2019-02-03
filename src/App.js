@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 
-
 const commands = [
+  {command: 'q!', description: 'Exit / quit vim, disgarding all changes'},
+  {command: ':w', description: 'Save your changes (write)'},
+  {command: ':wq', description: 'Save your changes (write) and exit / quit vim'},
   {
     command: 'x',
     description: 'Delete a single character at the cursor',
@@ -110,38 +112,37 @@ const App = props => {
   return (
     <div className="App">
       <header className="App-header">
-	  <h2>Vim Commands</h2>
+        <h2>Vim Commands</h2>
       </header>
-        <label htmlFor="search">Filter commands</label>
-        <input
-          type="text"
-          id="search"
-          onChange={e => setFilterValue(e.target.value)}
-          value={filterValue}
-        />
-        <table>
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Command</th>
+      <label htmlFor="search">Filter commands</label>
+      <input
+        type="text"
+        id="search"
+        onChange={e => setFilterValue(e.target.value)}
+        value={filterValue}
+      />
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Command</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredCommands.map(command => (
+            <tr key={command.command}>
+              <td>{command.description}</td>
+              <td>
+                <span className="command-char">{command.command}</span>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredCommands.map(command => (
-              <tr key={command.command}>
-                <td>{command.description}</td>
-                <td>
-                  <span className="command-char">{command.command}</span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p>
-          The code in this project is all being edited with neovim as part of a
-          learning exercise
-        </p>
-
+          ))}
+        </tbody>
+      </table>
+      <p>
+        The code in this project is all being edited with neovim as part of a
+        learning exercise
+      </p>
     </div>
   );
 };
