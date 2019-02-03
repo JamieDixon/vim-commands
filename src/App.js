@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import './App.css';
+
 
 const commands = [
   {
@@ -110,6 +110,8 @@ const App = props => {
   return (
     <div className="App">
       <header className="App-header">
+	  <h2>Vim Commands</h2>
+      </header>
         <label htmlFor="search">Filter commands</label>
         <input
           type="text"
@@ -117,11 +119,6 @@ const App = props => {
           onChange={e => setFilterValue(e.target.value)}
           value={filterValue}
         />
-        <p>
-          The code in this project is all being edited with neovim as part of a
-          learning exercise
-        </p>
-
         <table>
           <thead>
             <tr>
@@ -140,7 +137,11 @@ const App = props => {
             ))}
           </tbody>
         </table>
-      </header>
+        <p>
+          The code in this project is all being edited with neovim as part of a
+          learning exercise
+        </p>
+
     </div>
   );
 };
