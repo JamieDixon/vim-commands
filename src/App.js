@@ -69,6 +69,39 @@ const commands = [
     description:
       'Delete the current line and store the deleted value in the registry (kinda like the clipboard).',
   },
+  {
+    command: ['g', 'f'],
+    description:
+      'Go to the file based on the path under the cursor. Kind of like ctrl + click on an import path',
+  },
+  {
+    command: ['ctrl', 'o'],
+    description: 'Go back in history to the previous location.',
+  },
+  {
+    command: ['ctrl', 'i'],
+    description:
+      "Go forward in history to the next location (assuming you've already moved back through the history",
+  },
+  {command: [':', 'Explore'], description: 'Open the file browser'},
+  {
+    command: [':', 'e', '[path]'],
+    description: 'Open the file explorer at the path',
+  },
+  {
+    command: [':', 'b', 'd'],
+    description:
+      'Delete buffer. This is the same as exiting / closing the current file',
+  },
+  {
+    command: [':', 'b', 'd', '!'],
+    description:
+      'Delete buffer, disgarding any unsaved changes. This is the same as exiting / closing the current file and disgarding changes',
+  },
+  {
+    command: [':', 'set', 'number'],
+    description: 'Turn on line numbers',
+  },
 ];
 
 const useDebounce = (ms, value) => {
