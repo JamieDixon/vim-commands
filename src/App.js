@@ -9,6 +9,11 @@ const getQs = () =>
 
 const commands = [
   {
+    command: [':', 'c', 'q'],
+    description:
+      'Exit vim with an error code. Useful for e.g. aborting git commit --amend',
+  },
+  {
     command: [':', 'q', '!'],
     description: 'Exit / quit vim, disgarding all changes',
   },
